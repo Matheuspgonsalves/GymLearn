@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Ignorar metadados da IDE
+
+.metadata/
+/src/main/resources/application.yml
