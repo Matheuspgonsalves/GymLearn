@@ -1,6 +1,7 @@
 package com.gymlearn.gymlearn_backend.service;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -11,9 +12,11 @@ import com.gymlearn.gymlearn_backend.repository.UserRepository;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository){
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User createUser(String name, String email, String password, Role role){
@@ -21,7 +24,9 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email já cadastrado!");
         }
 
-        User user = new User(name, email, password, role);
+        String hashedPassword = passwordEncoder.encode(password);
+
+        User user = new User(name, email, hashedPassword, role);
         
         return userRepository.save(user);
     }
