@@ -3,8 +3,6 @@ package com.gymlearn.gymlearn_backend.security;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-import jakarta.annotation.PostConstruct;
-
 @Configuration
 @ConfigurationProperties(prefix = "gymlearn.security")
 public class JwtConfig {
