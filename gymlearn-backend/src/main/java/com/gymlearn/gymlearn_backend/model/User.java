@@ -1,6 +1,5 @@
 package com.gymlearn.gymlearn_backend.model;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
