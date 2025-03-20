@@ -14,6 +14,7 @@ import com.gymlearn.gymlearn_backend.DTO.LoginDTO;
 import com.gymlearn.gymlearn_backend.DTO.RegisterDTO;
 import com.gymlearn.gymlearn_backend.DTO.UserDTO;
 import com.gymlearn.gymlearn_backend.model.User;
+import com.gymlearn.gymlearn_backend.service.AuthUserDetailsService;
 import com.gymlearn.gymlearn_backend.service.TokenService;
 import com.gymlearn.gymlearn_backend.service.UserService;
 
@@ -23,11 +24,13 @@ public class AuthController {
     private final UserService userService;
     private final TokenService tokenService;
     private final AuthenticationManager authenticationManager;
+    private final AuthUserDetailsService authUserDetailsService;
 
-    public AuthController(UserService userService, TokenService tokenService, AuthenticationManager authenticationManager){
+    public AuthController(UserService userService, TokenService tokenService, AuthenticationManager authenticationManager, AuthUserDetailsService authUserDetailsService){
         this.userService = userService;
         this.tokenService = tokenService;
         this.authenticationManager = authenticationManager;
+        this.authUserDetailsService = authUserDetailsService;
     }
 
     @PostMapping("/register")
@@ -48,7 +51,7 @@ public class AuthController {
         authenticationManager.authenticate(authToken);
 
         //Buscar os detalher do usuário que foi autenticado
-        UserDetails userDetails = userService.loadUserByUsername(loginDTO.email());
+        UserDetails userDetails = authUserDetailsService.loadUserByUsername(loginDTO.email());
 
         //Gera o JWT
         String jwtToken = tokenService.generateToken(userDetails);
